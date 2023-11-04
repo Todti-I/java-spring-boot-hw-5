@@ -62,7 +62,7 @@ public class Request {
     /***
      * Количество рабочих дней
      */
-    private Integer wordDays;
+    private Integer workDays;
 
     /***
      * Уникальный идентификатор коммуникации
@@ -86,19 +86,22 @@ public class Request {
      */
     private Integer smsCode;
 
-
     @Override
     public String toString() {
         return "{" +
                 "uid='" + uid + '\'' +
                 ", operationUid='" + operationUid + '\'' +
-                ", systemName='" + systemName + '\'' +
+                ", systemName=" + systemName +
                 ", systemTime='" + systemTime + '\'' +
                 ", source='" + source + '\'' +
+                ", position=" + position +
+                ", salary=" + salary +
+                ", bonus=" + bonus +
+                ", workDays=" + workDays +
                 ", communicationId=" + communicationId +
                 ", templateId=" + templateId +
                 ", productCode=" + productCode +
-                ", snsCode=" + smsCode +
+                ", smsCode=" + smsCode +
                 '}';
     }
 }

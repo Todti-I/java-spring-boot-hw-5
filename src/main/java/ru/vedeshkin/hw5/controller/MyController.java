@@ -2,7 +2,6 @@ package ru.vedeshkin.hw5.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -29,22 +28,23 @@ import java.util.Objects;
 public class MyController {
 
     private final ValidationService validationService;
-    private final ModifyResponseService modifyResponseService;
     private final List<ModifyRequestService> modifyRequestServices;
+    private final List<ModifyResponseService> modifyResponseServices;
+
 
     @Autowired
     public MyController(ValidationService validationService,
-                        @Qualifier("ModifySystemTimeResponseService") ModifyResponseService modifyResponseService,
-                        List<ModifyRequestService> modifyRequestServices) {
+                        List<ModifyRequestService> modifyRequestServices,
+                        List<ModifyResponseService> modifyResponseServices) {
         this.validationService = validationService;
-        this.modifyResponseService = modifyResponseService;
         this.modifyRequestServices = modifyRequestServices;
+        this.modifyResponseServices = modifyResponseServices;
     }
 
     @PostMapping(value = "/feedback")
     public ResponseEntity<Response> feedback(@Valid @RequestBody Request request,
                                              BindingResult bindingResult) {
-        Response response = Response.createDefault(request);
+        Response response = Response.createDefault();
         log.info("request: {}", request);
         log.info("response: {}", response);
 
@@ -55,10 +55,10 @@ public class MyController {
             return handleValidationException(response);
         }
 
-        modifyResponseService.modify(response);
-        log.info("response: {}", response);
         modifyRequestServices.forEach(service -> service.modify(request));
         sendFeedbackToService2(request);
+        modifyResponseServices.forEach(service -> service.modify(request, response));
+        log.info("response: {}", response);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

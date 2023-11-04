@@ -1,6 +1,5 @@
 package ru.vedeshkin.hw5.model;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum Systems {
@@ -19,20 +18,5 @@ public enum Systems {
     @JsonValue
     public String getName() {
         return name;
-    }
-
-    @Override
-    public String toString() {
-        return name;
-    }
-
-    @JsonCreator
-    public static Systems getSystemsFromName(String name) {
-        for (Systems systems : Systems.values()) {
-            if (systems.getName().equals(name)) {
-                return systems;
-            }
-        }
-        return null;
     }
 }

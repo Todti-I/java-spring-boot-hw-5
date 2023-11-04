@@ -2,27 +2,48 @@ package ru.vedeshkin.hw5.model;
 
 import lombok.Builder;
 import lombok.Data;
-import ru.vedeshkin.hw5.util.DateTimeUtil;
-
-import java.util.Date;
 
 @Data
 @Builder
 public class Response {
 
+    /***
+     * Уникальный идентификатор сообщение
+     */
     private String uid;
+
+    /***
+     * Уникальный идентификатор операции
+     */
     private String operationUid;
+
+    /***
+     * Время создания сообщения
+     */
     private String systemTime;
+
+    /***
+     *  Код ответа
+     */
     private Codes code;
+
+    /***
+     * Премия сотрудника
+     */
     private Double annualBonus;
+
+    /***
+     * Код ошибки
+     */
     private ErrorCodes errorCode;
+
+    /***
+     * Сообщение об ошибке
+     */
     private ErrorMessages errorMessage;
 
-    public static Response createDefault(Request request) {
+    public static Response createDefault() {
         return Response.builder()
-                .uid(request.getUid())
-                .operationUid(request.getOperationUid())
-                .systemTime(DateTimeUtil.getCustomFormat().format(new Date()))
                 .code(Codes.SUCCESS)
                 .errorCode(ErrorCodes.EMPTY)
                 .errorMessage(ErrorMessages.EMPTY)
